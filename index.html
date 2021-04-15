@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="Sergiu Micu">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="style.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" rel="stylesheet"> 
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">  
+        <title>Home</title>
+    </head>
+    <body>
+        <input id="addFileWholeScreen" multiple value="" type="file" onchange="uploadFile(event)"/>
+        <h1 id="currentFolder">/</h1>
+        <div id="filesContainer">
+            <div class="containerElem" id="backButton" onclick="back()">
+            </div>
+            <div class="containerElem" id="addFile">
+                <input class="containerElem" id="addFileButton" multiple value="" type="file" onchange="uploadFile(event)"/>
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>
