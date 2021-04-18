@@ -1,7 +1,14 @@
 const url = "./list.txt"
 
 const margins = 10;
-const resetCONT = '<div class="wrap"><div id="filesContainer"><div class="containerElem" id="backButton" onclick="back()"></div><div class="containerElem" id="addFile"><input class="containerElem" id="addFileButton" value="" type="file" multiple onchange="uploadFile(event)"/></div></div>';
+const resetCONT = `
+<div class="containerElem" id="backButton" onclick="back()">
+</div>
+<div class="containerElem" id="addFolderButton" onclick="newFolder()">
+</div>
+<div class="containerElem" id="addFile">
+    <input class="containerElem" id="addFileButton" multiple value="" type="file" onchange="uploadFile(event)"/>
+</div>`;
 
 let request = new XMLHttpRequest();
 request.open('GET', url);
@@ -113,6 +120,12 @@ function computeWidth(){
     cont.style.width = width + 'px';
 }
 
+function newFolder(){
+    fetch('m/' + curentPath).then(()=>{
+        getFiles();
+    });
+}
+
 function uploadFile(e){
     var input = e.originalTarget;
     var files = input.files;
@@ -127,8 +140,8 @@ function uploadFile(e){
                 getFiles()
             });
         }; 
-        
     }
+    input.value = '';
 }
 
 function getFiles(){

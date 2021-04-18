@@ -2,6 +2,7 @@ import http.server
 import os
 import subprocess
 import shutil
+import socket
 from PIL import Image
 from PIL import UnidentifiedImageError
 bhtr = http.server.BaseHTTPRequestHandler
@@ -9,6 +10,11 @@ bhtr = http.server.BaseHTTPRequestHandler
 def makeValidPath(path):
     path = "." + path
     return path
+
+#TODO: remove folders from thumb on deletion
+#TODO: confirmation dialogs
+#TODO: check for existing files when creating new ones
+#TODO: rename files
 
 class handler(bhtr):
     def do_GET(self):
@@ -19,6 +25,24 @@ class handler(bhtr):
                 f += '\n' + item
             self.wfile.write(f.encode())
             return
+        if self.path[:3] == '/m/':
+            pth = self.path[3:]
+            newPath = pth + "/New%20Folder"
+            ind = 0
+            while True:
+                try:
+                    if ind == 0:
+                         os.mkdir(newPath)
+                    else:
+                        os.mkdir(newPath + '%20' + str(ind))
+                    break
+                except FileExistsError:
+                    ind += 1
+            newPath = 'thumb/' + newPath
+            if ind == 0:
+                os.mkdir(newPath)
+            else:
+                os.mkdir(newPath + '%20' + str(ind))
         elif self.path[:3] == '/r/':
             pth = self.path[3:]
             try:
@@ -27,7 +51,11 @@ class handler(bhtr):
                 shutil.rmtree(pth)
             except IsADirectoryError:
                 shutil.rmtree(pth)
-
+            else:
+                try:
+                    os.remove('thumb/' + pth)
+                except:
+                    print("not a picture")
             self.wfile.write("succes".encode())
             return
         self.path = makeValidPath(self.path)
@@ -59,7 +87,7 @@ class handler(bhtr):
             isImage = False
 
         if isImage:
-            subprocess.run("python resizer.py " + self.path)
+            subprocess.run(["python3", "resizer.py", self.path])
 
         self.send_response(200)
         self.wfile.write("succes".encode())
@@ -67,7 +95,8 @@ class handler(bhtr):
 
 def main():
     PORT = 80
-    server = http.server.HTTPServer(('0.0.0.0', 80), handler)
+    IP = '192.168.0.164'
+    server = http.server.HTTPServer((IP, 80), handler)
     print("Running on port %s" % PORT)
     server.serve_forever()
 

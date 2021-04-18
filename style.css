@@ -81,16 +81,11 @@ body{
     opacity: 0;
     margin: 0;
 }
-#addFileWholeScreen{
-    position: fixed;
-    opacity: 0;
-    background-color: red;
-    width: 100vw;
-    top: 0;
-    left: 0;
-    height: 100vh;
-}
 #backButton{
     background-image: url('back.png');
+    background-size: 40%;
+}
+#addFolderButton{
+    background-image: url('add-folder.png');
     background-size: 40%;
 }
