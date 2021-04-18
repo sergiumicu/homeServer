@@ -44,6 +44,14 @@ function createElement(path, currentPath, isFolder){
     c.innerHTML = "X";
 
     c.addEventListener('click', (e)=>{
+        var isOK = true;
+        if(!e.altKey)
+            isOK = confirm("Are you sure you want to delete " + e.originalTarget.parentNode.children[1].innerHTML + "?");
+        if(!isOK){
+            if(e.stopPropagation)
+            e.stopPropagation();
+            return;
+        }
         path = e.originalTarget.parentNode.alt; //delete this
         path = '/r/'+ path;
         fetch(path).then(()=>{
@@ -65,9 +73,9 @@ function createElement(path, currentPath, isFolder){
     
     a.addEventListener('click', ()=>{
         if(isFolder)
-        changeFolder(path);
+            changeFolder(path);
         else
-        open(curentPath + '/' + path);
+            open(curentPath + '/' + path);
     });
 
     return a;

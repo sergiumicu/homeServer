@@ -11,8 +11,6 @@ def makeValidPath(path):
     path = "." + path
     return path
 
-#TODO: remove folders from thumb on deletion
-#TODO: confirmation dialogs
 #TODO: check for existing files when creating new ones
 #TODO: rename files
 
@@ -49,8 +47,10 @@ class handler(bhtr):
                 os.remove(pth)
             except OSError:
                 shutil.rmtree(pth)
+                shutil.rmtree('thumb/' + pth)
             except IsADirectoryError:
                 shutil.rmtree(pth)
+                shutil.rmtree('thumb/' + pth)
             else:
                 try:
                     os.remove('thumb/' + pth)
